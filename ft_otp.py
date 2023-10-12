@@ -1,4 +1,5 @@
 import argparse
+import os
 import pathlib
 from typing import Optional
 
@@ -54,6 +55,46 @@ def parse_args() -> Args:
         exit(0)
     return args
 
+def get_file_contents(file_name: str, verbose: bool = False) -> str:
+    file_path: Path = Path(file_name)
+    if verbose:
+        print(f'Opening {file_name} as a file...')
+    with open(file_path,'r') as f:
+        content: str = f.read().strip()
+        if verbose:
+            print(f'File {file_name} found.')
+            print(f'File {file_name} contains: \"{content}\"')
+        return content
+
+# ---------------------------
+# Key generation
+# ---------------------------
+def validate_hex_key(hex: str, verbose: bool = False) -> None:
+    if len(hex) != 64:
+        raise Exception('invalid hex key: key must be 64 hexadecimal characters')
+    if verbose:
+        print(f'{color.SUCCESS}Valid hex key: {hex}{color.RESET}')
+
+def get_hex_key(args: Args) -> str:
+    hex_key: str = ''
+    try:
+        hex_key: str = get_file_contents(args.hex, args.verbose)
+        validate_hex_key(hex_key, args.verbose)
+        return hex_key
+    except FileNotFoundError as e:
+        if args.verbose:
+            print(e)
+        validate_hex_key(args.hex, args.verbose)
+        return args.hex
+        
+def generate_key_from_hex(args: Args) -> None:
+    try:
+        hex: str = get_hex_key(args)
+    except Exception as e:
+        print(f'{color.ERROR}ft_otp: error: {e}{color.RESET}')
+
+
+
 # ---------------------------
 # Main
 # ---------------------------
@@ -61,6 +102,23 @@ def main() -> None:
     print_header()
     args: Args = parse_args()
     print_args(args)
+    try:
+        if args.hex:
+            generate_key_from_hex(args)
+    except Exception as e:
+        print(f'{color.ERROR}Error MAIN: {e}{color.RESET}')
+
+    # try:
+    #     if args.key:
+    #         get_file_contents(args.key)
+    #         print(f'{color.SUCCESS}Path OK: {args.key}{color.RESET}')
+    #     if args.hex:
+    #         get_file_contents(args.hex)
+    #         print(f'{color.SUCCESS}Path OK: {args.hex}{color.RESET}')
+    # except FileNotFoundError as e:
+    #     print(f'{color.ERROR}Error: FILE NOT FOUND {e}{color.RESET}')
+    # except Exception as e:
+    #     print(f'{color.ERROR}Error: {e}{color.RESET}')
 
 if __name__ == '__main__':
     main()
