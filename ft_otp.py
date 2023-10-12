@@ -35,8 +35,8 @@ def print_args(args: Args) -> None:
     print('{:-^80}'.format(''))
     if args.key:
         print(f'[+] Key to generate TOTP with: {color.INFO}{args.key}{color.RESET}')
-    if args.hex_key:
-        print(f'[+] Hexadecimal key to encrypt: {color.INFO}{args.hex_key}{color.RESET}')
+    if args.hex:
+        print(f'[+] Hexadecimal key to encrypt: {color.INFO}{args.hex}{color.RESET}')
     print(f'[+] Verbose mode: {color.INFO}{args.verbose}{color.RESET}')
     print('{:-^80}'.format(''))
 
