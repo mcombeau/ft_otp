@@ -17,6 +17,11 @@ Args = argparse.Namespace
 Parser = argparse.ArgumentParser
 Path = pathlib.PosixPath
 
+class InvalidHexKeyError(Exception):
+    def __init__(self, message = 'invalid hex key: key must be 64 hexadecimal characters') -> None:
+        self.message: str = message
+        super().__init__(self.message)
+
 # ---------------------------
 # Prettify
 # ---------------------------
@@ -71,20 +76,20 @@ def get_file_contents(file_name: str, verbose: bool = False) -> str:
 # ---------------------------
 def validate_hex_key(hex: str, verbose: bool = False) -> None:
     if len(hex) != 64:
-        raise Exception('invalid hex key: key must be 64 hexadecimal characters')
+        raise InvalidHexKeyError
     if verbose:
         print(f'{color.SUCCESS}Valid hex key: {hex}{color.RESET}')
 
 def get_hex_key(args: Args) -> str:
     try:
+        validate_hex_key(args.hex, args.verbose)
+        return args.hex
+    except InvalidHexKeyError as e:
+        if args.verbose:
+            print(f'{args.hex}: {e}')
         hex_key: str = get_file_contents(args.hex, args.verbose)
         validate_hex_key(hex_key, args.verbose)
         return hex_key
-    except FileNotFoundError as e:
-        if args.verbose:
-            print(e)
-        validate_hex_key(args.hex, args.verbose)
-        return args.hex
         
 def generate_key_from_hex(args: Args) -> None:
     hex: str = get_hex_key(args)
