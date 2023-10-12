@@ -93,8 +93,6 @@ def generate_key_from_hex(args: Args) -> None:
     except Exception as e:
         print(f'{color.ERROR}ft_otp: error: {e}{color.RESET}')
 
-
-
 # ---------------------------
 # Main
 # ---------------------------
@@ -107,18 +105,6 @@ def main() -> None:
             generate_key_from_hex(args)
     except Exception as e:
         print(f'{color.ERROR}Error MAIN: {e}{color.RESET}')
-
-    # try:
-    #     if args.key:
-    #         get_file_contents(args.key)
-    #         print(f'{color.SUCCESS}Path OK: {args.key}{color.RESET}')
-    #     if args.hex:
-    #         get_file_contents(args.hex)
-    #         print(f'{color.SUCCESS}Path OK: {args.hex}{color.RESET}')
-    # except FileNotFoundError as e:
-    #     print(f'{color.ERROR}Error: FILE NOT FOUND {e}{color.RESET}')
-    # except Exception as e:
-    #     print(f'{color.ERROR}Error: {e}{color.RESET}')
 
 if __name__ == '__main__':
     main()
