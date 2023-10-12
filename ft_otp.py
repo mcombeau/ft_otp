@@ -76,7 +76,6 @@ def validate_hex_key(hex: str, verbose: bool = False) -> None:
         print(f'{color.SUCCESS}Valid hex key: {hex}{color.RESET}')
 
 def get_hex_key(args: Args) -> str:
-    hex_key: str = ''
     try:
         hex_key: str = get_file_contents(args.hex, args.verbose)
         validate_hex_key(hex_key, args.verbose)
@@ -88,10 +87,7 @@ def get_hex_key(args: Args) -> str:
         return args.hex
         
 def generate_key_from_hex(args: Args) -> None:
-    try:
-        hex: str = get_hex_key(args)
-    except Exception as e:
-        print(f'{color.ERROR}ft_otp: error: {e}{color.RESET}')
+    hex: str = get_hex_key(args)
 
 # ---------------------------
 # Main
@@ -104,7 +100,7 @@ def main() -> None:
         if args.hex:
             generate_key_from_hex(args)
     except Exception as e:
-        print(f'{color.ERROR}Error MAIN: {e}{color.RESET}')
+        print(f'{color.ERROR}ft_otp: error: {e}{color.RESET}')
 
 if __name__ == '__main__':
     main()
